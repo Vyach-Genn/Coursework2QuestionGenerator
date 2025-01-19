@@ -25,7 +25,7 @@ public class JavaController {
         questionService.addQuestionAndAnswer(question, answer);
     }
 
-    @PostMapping("/remove")
+    @DeleteMapping("/remove")
     public void removeQuestion(@RequestParam("question") String question,
                                @RequestParam("answer") String answer) {
         questionService.removeQuestionAndAnswer(question, answer);
