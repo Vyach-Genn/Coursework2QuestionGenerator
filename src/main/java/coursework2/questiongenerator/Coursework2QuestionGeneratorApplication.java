@@ -1,4 +1,4 @@
-package coursework2questiongenerator;
+package coursework2.questiongenerator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
