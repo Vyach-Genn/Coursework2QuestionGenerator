@@ -44,6 +44,9 @@ public class JavaQuestionService implements QuestionService {
         return new HashSet<>(questions);
     }
 
+    //   В связи с тем что "random" метод по заданию находится в "ExaminerService" не вижу смыска, здесь
+    //   добавлять логику подобно(Collections.shuffle(questions)),
+    //   кроме как проверить на исключения.
     @Override
     public Set<Question> getRandomQuestions(int amount) {
         if (amount > questions.size()) {
