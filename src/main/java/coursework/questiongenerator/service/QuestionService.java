@@ -3,7 +3,6 @@ package coursework.questiongenerator.service;
 import coursework.questiongenerator.domain.Question;
 
 import java.util.Collection;
-import java.util.Set;
 
 public interface QuestionService {
 
@@ -16,5 +15,5 @@ public interface QuestionService {
 
     Collection<Question> getAll();
 
-    Set<Question> getRandomQuestions(int amount);
+    Question getRandomQuestions();
 }

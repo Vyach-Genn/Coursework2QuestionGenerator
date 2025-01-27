@@ -1,22 +1,20 @@
 package coursework.questiongenerator.service;
 
 import coursework.questiongenerator.domain.Question;
-import coursework.questiongenerator.exception.TooManyQuestionsRequestedException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
 public class JavaQuestionService implements QuestionService {
 
     Set<Question> questions = new HashSet<>();
+    private final Set<Question> usedQuestions = new HashSet<>();
 
     @Override
     public Question add(String question, String answer) {
-        if (question == null || answer == null) {
+        if ((question == null || answer == null) || (question.isEmpty() || answer.isEmpty())) {
             throw new IllegalArgumentException("Вопрос или ответ не могут быть null");
         }
         questions.add(new Question(question, answer));
@@ -26,7 +24,7 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Question add(Question question) {
-        if (question == null) {
+        if (question.isEmpty()) {
             throw new IllegalArgumentException("Вопрос и ответ не могут быть null");
         }
         questions.add(question);
@@ -44,19 +42,21 @@ public class JavaQuestionService implements QuestionService {
         return new HashSet<>(questions);
     }
 
-    //   Всвязи с тем что "random" выбор случайных вопросов по заданию находится
-    //   в ExaminerService не вижу смысла,
-    //   здесь добавлять логику на этот выбор, подобно(Collections.shuffle(questions);),
-    //   кроме как проверить на исключения сам "amount".
     @Override
-    public Set<Question> getRandomQuestions(int amount) {
-        if (amount > questions.size()) {
-            throw new TooManyQuestionsRequestedException("Количество вопросов не может быть больше общего числа вопросов");
+    public Question getRandomQuestions() {
+        if (questions.isEmpty()) {
+            throw new IllegalStateException("Нет доступных вопросов");
         }
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Количество вопросов не может быть отрицательным, или нулевым");
-        }
-        return new HashSet<>(questions);
+        List<Question> questionList = new ArrayList<>(questions);
+        Collections.shuffle(questionList);
 
+        for (Question question : questionList) {
+            if (!usedQuestions.contains(question)) {
+                usedQuestions.add(question);
+                return question;
+            }
+        }
+        usedQuestions.clear();
+        return getRandomQuestions();
     }
 }

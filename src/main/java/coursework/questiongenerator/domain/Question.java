@@ -1,5 +1,7 @@
 package coursework.questiongenerator.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 
@@ -14,6 +16,14 @@ public class Question {
         this.answer = answer;
     }
 
+    public String getQuestion() {
+        return question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -25,5 +35,10 @@ public class Question {
     @Override
     public int hashCode() {
         return Objects.hash(question, answer);
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        return question == null || question.trim().isEmpty() || answer == null || answer.trim().isEmpty();
     }
 }

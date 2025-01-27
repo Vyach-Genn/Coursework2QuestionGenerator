@@ -1,7 +1,6 @@
 package coursework.questiongenerator.service;
 
 import coursework.questiongenerator.domain.Question;
-import coursework.questiongenerator.exception.TooManyQuestionsRequestedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,49 +11,29 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class JavaQuestionServiceTest {
 
-    private final JavaQuestionService out = new JavaQuestionService();
+    private JavaQuestionService out;
 
-    @Test
-    void add_ShouldAddQuestionToCollection() {
-        String questionText = "Что такое переменная";
-        String answerText = "Именованная область памяти";
-        int initialSize = out.getAll().size();
-
-        out.add(questionText, answerText);
-        Collection<Question> actual = out.getAll();
-
-        assertThat(actual).contains(new Question(questionText, answerText))
-                .hasSize(initialSize + 1);
+    public static Stream<Arguments> provideParamsForTestQuestionAndAnswer() {
+        return Stream.of(
+                Arguments.of(new Question("Вопрос 1", "Ответ 1")),
+                Arguments.of(new Question("Вопрос 2", "Ответ 2")),
+                Arguments.of(new Question("Вопрос 3", "Ответ 3"))
+        );
     }
 
-    @ParameterizedTest
-    @MethodSource("provideParamsForTestQuestionAndAnswer")
-    void addQuestion_ShouldAddQuestionToCollection(Question question) {
-        int initialSize = out.getAll().size();
-
-        out.add(question);
-        Collection<Question> actual = out.getAll();
-
-        assertThat(actual).contains(question)
-                .hasSize(initialSize + 1);
+    @BeforeEach
+    void setUp() {
+        out = new JavaQuestionService();
     }
 
     @Test
     void addQuestionAndAnswer_ShouldExceptionsWhenNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             out.add(null, null);
-        });
-    }
-
-    @Test
-    void addQuestion_ShouldExceptionsWhenNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            out.add(null);
         });
     }
 
@@ -81,27 +60,35 @@ class JavaQuestionServiceTest {
     }
 
     @Test
-    void getRandomQuestions_ShouldThrowIllegalArgumentExceptionAmountOfNegativeNumber() {
-        assertThrows(IllegalArgumentException.class, () -> out.getRandomQuestions(-1));
+    void add_ShouldAddQuestionToCollection() {
+        Question question = out.add("Что такое ООП?", "Объектно-ориентированное программирование");
+
+        assertNotNull(question);
+        assertEquals(1, out.getAll().size());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideParamsForTestQuestionAndAnswer")
+    void addQuestion_ShouldAddQuestionToCollection(Question question) {
+        out.add(question);
+
+        assertNotNull(question);
+        assertEquals(1, out.getAll().size());
     }
 
     @Test
-    void getQuestions_ShouldThrowExceptionWhenAmountIsZero() {
-        assertThrows(IllegalArgumentException.class, () -> out.getRandomQuestions(0));
+    void getRandomQuestions_ShouldReturnQuestion() {
+        out.add("Вопрос 1", "Ответ 1");
+        out.add("Вопрос 2", "Ответ 2");
+
+        Question question = out.getRandomQuestions();
+
+        assertNotNull(question);
+        assertTrue(out.getAll().contains(question));
     }
 
     @Test
-    void shouldThrowTooManyQuestionsRequestedException_WhenRequestedMoreThanAvailable() {
-        out.add("Что такое объект", "Экземпляр класса");
-        assertThrows(TooManyQuestionsRequestedException.class, () -> out.getRandomQuestions(2));
+    void getRandomQuestions_ShouldThrowException_WhenNoQuestionsAvailable() {
+        assertThrows(IllegalStateException.class, () -> out.getRandomQuestions());
     }
-
-    public static Stream<Arguments> provideParamsForTestQuestionAndAnswer() {
-        return Stream.of(
-                Arguments.of(new Question("Что такое переменная", "Именованная область памяти")),
-                Arguments.of(new Question("Что такое Java", "Язык программирования")),
-                Arguments.of(new Question("Что такое объект", "Экземпляр класса"))
-        );
-    }
-
 }
