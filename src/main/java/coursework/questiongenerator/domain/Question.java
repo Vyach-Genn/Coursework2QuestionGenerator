@@ -1,4 +1,4 @@
-package coursework2.questiongenerator.domain;
+package coursework.questiongenerator.domain;
 
 import java.util.Objects;
 
@@ -12,14 +12,6 @@ public class Question {
     public Question(String question, String answer) {
         this.question = question;
         this.answer = answer;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public String getAnswer() {
-        return answer;
     }
 
     @Override

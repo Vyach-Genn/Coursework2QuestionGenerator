@@ -1,8 +1,8 @@
-package coursework2.questiongenerator.controller;
+package coursework.questiongenerator.controller;
 
 
-import coursework2.questiongenerator.domain.Question;
-import coursework2.questiongenerator.service.ExaminerService;
+import coursework.questiongenerator.domain.Question;
+import coursework.questiongenerator.service.ExaminerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

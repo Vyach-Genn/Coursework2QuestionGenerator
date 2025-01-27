@@ -1,7 +1,7 @@
-package coursework2.questiongenerator.service;
+package coursework.questiongenerator.service;
 
-import coursework2.questiongenerator.domain.Question;
-import coursework2.questiongenerator.exception.TooManyQuestionsRequestedException;
+import coursework.questiongenerator.domain.Question;
+import coursework.questiongenerator.exception.TooManyQuestionsRequestedException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -16,8 +16,8 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Question add(String question, String answer) {
-        if (question == null && answer == null) {
-            throw new IllegalArgumentException("Вопрос и ответ не могут быть null");
+        if (question == null || answer == null) {
+            throw new IllegalArgumentException("Вопрос или ответ не могут быть null");
         }
         questions.add(new Question(question, answer));
         return new Question(question, answer);

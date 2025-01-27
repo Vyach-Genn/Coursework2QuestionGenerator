@@ -1,8 +1,8 @@
-package coursework2.questiongenerator.controller;
+package coursework.questiongenerator.controller;
 
 
-import coursework2.questiongenerator.domain.Question;
-import coursework2.questiongenerator.service.QuestionService;
+import coursework.questiongenerator.domain.Question;
+import coursework.questiongenerator.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +26,13 @@ public class JavaController {
     public Question addQuestion(@RequestParam("question") String question,
                                      @RequestParam("answer") String answer) {
         return service.add(question, answer);
+    }
+
+    //С учетом того что у нас по заданию 2 метода add просто строковой и объектный
+    @GetMapping("/add/object")
+    public Question addQuestionObject(@RequestParam("question") String question,
+                                @RequestParam("answer") String answer) {
+        return service.add(new Question(question, answer));
     }
 
     @GetMapping("/remove")

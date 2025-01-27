@@ -1,7 +1,7 @@
-package coursework2.questiongenerator.service;
+package coursework.questiongenerator.service;
 
-import coursework2.questiongenerator.domain.Question;
-import coursework2.questiongenerator.exception.TooManyQuestionsRequestedException;
+import coursework.questiongenerator.domain.Question;
+import coursework.questiongenerator.exception.TooManyQuestionsRequestedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,24 +12,12 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JavaQuestionServiceTest {
 
     private final JavaQuestionService out = new JavaQuestionService();
-
-    public static Stream<Arguments> provideParamsForTestQuestionAndAnswer() {
-        return Stream.of(
-                Arguments.of(new Question("Что такое переменная", "Именованная область памяти")),
-                Arguments.of(new Question("Что такое Java", "Язык программирования")),
-                Arguments.of(new Question("Что такое объект", "Экземпляр класса"))
-        );
-    }
-
-    @BeforeEach
-    void setUp() {
-        out.getAll().clear();
-    }
 
     @Test
     void add_ShouldAddQuestionToCollection() {
@@ -60,6 +48,13 @@ class JavaQuestionServiceTest {
     void addQuestionAndAnswer_ShouldExceptionsWhenNull() {
         assertThrows(IllegalArgumentException.class, () -> {
             out.add(null, null);
+        });
+    }
+
+    @Test
+    void addQuestion_ShouldExceptionsWhenNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            out.add(null);
         });
     }
 
@@ -99,6 +94,14 @@ class JavaQuestionServiceTest {
     void shouldThrowTooManyQuestionsRequestedException_WhenRequestedMoreThanAvailable() {
         out.add("Что такое объект", "Экземпляр класса");
         assertThrows(TooManyQuestionsRequestedException.class, () -> out.getRandomQuestions(2));
+    }
+
+    public static Stream<Arguments> provideParamsForTestQuestionAndAnswer() {
+        return Stream.of(
+                Arguments.of(new Question("Что такое переменная", "Именованная область памяти")),
+                Arguments.of(new Question("Что такое Java", "Язык программирования")),
+                Arguments.of(new Question("Что такое объект", "Экземпляр класса"))
+        );
     }
 
 }

@@ -1,6 +1,6 @@
-package coursework2.questiongenerator.service;
+package coursework.questiongenerator.service;
 
-import coursework2.questiongenerator.domain.Question;
+import coursework.questiongenerator.domain.Question;
 
 import java.util.Collection;
 

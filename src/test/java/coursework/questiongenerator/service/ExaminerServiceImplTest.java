@@ -1,6 +1,6 @@
-package coursework2.questiongenerator.service;
+package coursework.questiongenerator.service;
 
-import coursework2.questiongenerator.domain.Question;
+import coursework.questiongenerator.domain.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,8 +24,6 @@ class ExaminerServiceImplTest {
     private ExaminerServiceImpl out;
 
     private final List<Question> sampleQuestions = List.of(
-            new Question("Что такое Java?", "Язык программирования"),
-            new Question("Что такое переменная", "Именованная область памяти"),
             new Question("Что такое объект", "Экземпляр класса"),
             new Question("Что такое полиморфизм?", "Одно из основных свойств ООП"),
             new Question("Что такое массив?", "Структура данных"));
@@ -42,16 +40,16 @@ class ExaminerServiceImplTest {
         Collection<Question> actual = out.getQuestions(amount);
 
         assertThat(actual).hasSize(3);
-        verify(javaQuestionService, times(1)).getRandomQuestions(3);
+        verify(javaQuestionService, times(1)).getRandomQuestions(amount);
     }
 
     @Test
     void getQuestions_ShouldReturnUniqueQuestions() {
         int amount = 2;
 
-        Collection<Question> result = out.getQuestions(amount);
+        Collection<Question> actual = out.getQuestions(amount);
 
-        assertThat(result).doesNotHaveDuplicates();
+        assertThat(actual).doesNotHaveDuplicates();
         verify(javaQuestionService, times(1)).getRandomQuestions(2);
     }
 

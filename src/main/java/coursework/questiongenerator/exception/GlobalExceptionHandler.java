@@ -1,4 +1,4 @@
-package coursework2.questiongenerator.exception;
+package coursework.questiongenerator.exception;
 
 
 import org.springframework.http.HttpStatus;
