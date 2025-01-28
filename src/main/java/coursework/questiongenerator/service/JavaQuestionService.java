@@ -9,6 +9,7 @@ import java.util.*;
 @Service
 public class JavaQuestionService implements QuestionService {
 
+    Random random = new Random();
     Set<Question> questions = new HashSet<>();
     private final Set<Question> usedQuestions = new HashSet<>();
 
@@ -48,15 +49,9 @@ public class JavaQuestionService implements QuestionService {
             throw new IllegalStateException("Нет доступных вопросов");
         }
         List<Question> questionList = new ArrayList<>(questions);
-        Collections.shuffle(questionList);
-
-        for (Question question : questionList) {
-            if (!usedQuestions.contains(question)) {
-                usedQuestions.add(question);
-                return question;
-            }
-        }
-        usedQuestions.clear();
-        return getRandomQuestions();
+        int randomIndex = random.nextInt(questionList.size());
+        Question randomQuestion = questionList.get(randomIndex);
+        usedQuestions.add(randomQuestion);
+        return randomQuestion;
     }
 }
